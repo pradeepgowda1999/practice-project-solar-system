@@ -29,3 +29,9 @@ jobs:
 
        - name: test cases
          run: npm test
+
+       - name: upload test files
+         uses: actions/upload-artifact@v4
+         with:
+           name: test-files
+           path: test-files
