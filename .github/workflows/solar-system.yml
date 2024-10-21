@@ -40,3 +40,4 @@ jobs:
          with:
            name: test-files
            path: test-results.xml
+           overwrite: true
