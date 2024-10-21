@@ -33,10 +33,11 @@ jobs:
          run: npm install
 
        - name: test cases
+         id: unit-test-case
          run: npm test
 
        - name: upload test filess
-         if: failure()
+         if: failure() && (steps.unit-test-case.outcome == 'failure' || steps.unit-test-case.outcome == 'success')
          uses: actions/upload-artifact@v4
          with:
            name: test-files
