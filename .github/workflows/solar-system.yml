@@ -102,6 +102,7 @@ jobs:
          context: .
          push: false
          tags: ${{ vars.DOCKERHUB_USERNAME }}solar-system:${{ github.sha }}
+         
      - name: Docker Image Testing
        run: |
          docker images
