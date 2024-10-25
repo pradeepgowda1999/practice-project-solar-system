@@ -1,4 +1,4 @@
-name: Service Containers demonstration
+name: Service Containers demostration
 
 on: 
   workflow_dispatch:
