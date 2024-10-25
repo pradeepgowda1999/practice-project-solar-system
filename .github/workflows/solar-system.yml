@@ -1,4 +1,4 @@
-name: docker image build
+name: Service Containers
 
 on: 
   workflow_dispatch:
@@ -14,6 +14,16 @@ env:
 
 jobs:
   unit-testing:
+     services:
+       mongo-db:
+         image: siddharth67/mongo-db:non-prod
+         ports: 
+           - 27017:27017
+     env:
+       MONGO_URI: 'mongodb://localhost:27017/superData'
+       MONGO_USERNAME: non-prod-user
+       MONGO_PASSWORD: non-prod-password
+
      strategy:
        matrix: 
          node-version: [18]
@@ -52,75 +62,75 @@ jobs:
            overwrite: true
       
 
-  Code-Coverage:
-     runs-on: ubuntu-latest
-     steps:
-       - name: checkout repo
-         uses: actions/checkout@v4
+  # Code-Coverage:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: checkout repo
+  #        uses: actions/checkout@v4
        
-       - name: install NodeJs
-         uses:  actions/setup-node@v3
-         with:
-            node-version: 18
+  #      - name: install NodeJs
+  #        uses:  actions/setup-node@v3
+  #        with:
+  #           node-version: 18
 
-       - name: cache NPM dependenciess
-         uses: actions/cache@v3
-         with:
-            path: node_modules
-            key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json')}}
+  #      - name: cache NPM dependenciess
+  #        uses: actions/cache@v3
+  #        with:
+  #           path: node_modules
+  #           key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json')}}
        
-       - name: Install dependencies
-         run: npm install
+  #      - name: Install dependencies
+  #        run: npm install
 
-       - name: code coverage
-         continue-on-error: true
-         run: npm run coverage
+  #      - name: code coverage
+  #        continue-on-error: true
+  #        run: npm run coverage
 
-       - name: upload code coverage report
-         uses: actions/upload-artifact@v4
-         with:
-           name: coverage test results
-           path: coverage
-           retension-days: 5
+  #      - name: upload code coverage report
+  #        uses: actions/upload-artifact@v4
+  #        with:
+  #          name: coverage test results
+  #          path: coverage
+  #          retension-days: 5
 
-  docker_login:
-    needs: [unit-testing, Code-Coverage]
-    permissions: 
-       packages: write
-    runs-on: ubuntu-latest
+  # docker_login:
+  #   needs: [unit-testing, Code-Coverage]
+  #   permissions: 
+  #      packages: write
+  #   runs-on: ubuntu-latest
     
-    steps:
-      - name: checkout-repo
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: checkout-repo
+  #       uses: actions/checkout@v4
 
-      - name: dockerhub-login
-        uses: docker/login-action@v2.2.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+  #     - name: dockerhub-login
+  #       uses: docker/login-action@v2.2.0
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: github conatiner registry
-        uses: docker/login-action@v2.2.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: github conatiner registry
+  #       uses: docker/login-action@v2.2.0
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.repository_owner }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
         
-      - name: docker image build 
-        uses: docker/build-push-action@v4
-        with: 
-          context: .
-          push: false
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}solar-system:${{ github.sha }}
+  #     - name: docker image build 
+  #       uses: docker/build-push-action@v4
+  #       with: 
+  #         context: .
+  #         push: false
+  #         tags: ${{ secrets.DOCKERHUB_USERNAME }}solar-system:${{ github.sha }}
        
-      - name: docker image push to dockerhub and GHCR
-        uses: docker/build-push-action@v4 
-        with: 
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
+  #     - name: docker image push to dockerhub and GHCR
+  #       uses: docker/build-push-action@v4 
+  #       with: 
+  #         context: .
+  #         push: true
+  #         tags: |
+  #           ${{ secrets.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
+  #           ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
       
         
   
