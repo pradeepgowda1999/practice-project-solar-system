@@ -1,4 +1,4 @@
-name: Service Containers
+name: Service Container
 
 on: 
   workflow_dispatch:
