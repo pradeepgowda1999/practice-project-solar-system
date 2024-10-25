@@ -85,9 +85,10 @@ jobs:
 
   docker_login:
     needs: [unit-testing, Code-Coverage]
-    runs-on: ubuntu-latest
-    permission: 
+    permissions: 
        packages: write
+    runs-on: ubuntu-latest
+    
     steps:
       - name: checkout-repo
         uses: actions/checkout@v4
