@@ -83,7 +83,7 @@ jobs:
            path: coverage
            retension-days: 5
 
-  docker login and push:
+  docker_login_and_push:
     needs: [unit-testing, Code-Coverage]
     runs-on: ubuntu-latest
     steps:
