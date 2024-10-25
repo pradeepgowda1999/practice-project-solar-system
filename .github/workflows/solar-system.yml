@@ -96,7 +96,7 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
         
-      - name: docker image build and push .
+      - name: docker image build and push 
         uses: docker/build-push-action@v4
         with: 
           context: .
