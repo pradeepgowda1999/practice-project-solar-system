@@ -83,7 +83,7 @@ jobs:
            path: coverage
            retension-days: 5
 
-  docker_login_and_push:
+  docker_login:
     needs: [unit-testing, Code-Coverage]
     runs-on: ubuntu-latest
     steps:
@@ -96,12 +96,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
         
-      - name: docker image build and push 
+      - name: docker image build 
+        uses: docker/build-push-action@v4
+        with: 
+          context: .
+          push: false
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}solar-system:${{ github.sha }}
+       
+      - name: docker image push 
         uses: docker/build-push-action@v4
         with: 
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}solar-system:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
       
         
   
