@@ -1,7 +1,6 @@
 name: Service Containers
 
 on: 
-  workflow_dispatch:
   push:
      - feature-branch
 
