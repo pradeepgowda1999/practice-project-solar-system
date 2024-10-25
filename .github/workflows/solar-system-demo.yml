@@ -3,9 +3,7 @@ name: Service Containers
 on: 
   workflow_dispatch:
   push:
-    branches:
-      - main
-      - 'feature/*'
+     - feature-branch
 
 env:
     MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
