@@ -31,35 +31,37 @@ jobs:
        
      runs-on: ${{ matrix.os }}
      steps:
-       - name: checkout repository
+       - name: Checkout repository
          uses: actions/checkout@v4
        
-       - name: install NodeJs - ${{ matrix.node-version}}
-         uses:  actions/setup-node@v3
+       - name: Install NodeJs - ${{ matrix.node-version }}
+         uses: actions/setup-node@v3
          with:
-            node-version: ${{ matrix.node-version}}
+            node-version: ${{ matrix.node-version }}
 
-       - name: cache NPM dependencies
+       - name: Cache NPM dependencies
          uses: actions/cache@v3
          with:
             path: node_modules
-            key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json')}}
+            key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-node-modules-
        
        - name: Install dependencies
          run: npm install
 
-       - name: test cases
+       - name: Test cases
          id: unit-test-case
          run: npm test
 
-       - name: upload test filess
-         #if: failure() && (steps.unit-test-case.outcome == 'failure' || steps.unit-test-case.outcome == 'success')
-         if: always()
+       - name: Upload test files
+         if: always() # This will upload files whether the test passes or fails
          uses: actions/upload-artifact@v4
          with:
            name: test-files
            path: test-results.xml
            overwrite: true
+
       
 
   # Code-Coverage:
