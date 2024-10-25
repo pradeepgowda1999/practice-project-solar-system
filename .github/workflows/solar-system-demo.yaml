@@ -1,9 +1,6 @@
 name: service container
 
-on: workflow_dispatch
-  # push:
-  #   branches:
-  #    - 'feature/*'
+on: push
 
 env:
     MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
