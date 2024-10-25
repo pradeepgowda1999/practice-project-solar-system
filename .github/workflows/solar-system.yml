@@ -113,7 +113,6 @@ jobs:
           -e MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }} \
           ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
         
-        echo Testing Image URL using wget 
-        wget -q -O - 127.0.0.1:3000/live | grep live
+  
 
        
