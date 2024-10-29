@@ -1,3 +1,6 @@
+[![service container](https://github.com/pradeepgowda1999/practice-project-solar-system/actions/workflows/solar-system-demo.yaml/badge.svg)](https://github.com/pradeepgowda1999/practice-project-solar-system/actions/workflows/solar-system-demo.yaml)
+
+
 # Solar System NodeJS Application
 
 A simple HTML+MongoDB+NodeJS project to display Solar System and it's planets.
